@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { KpTagComponent } from '../../kits/ui-primeng-kit/angular';
+import { KpTagComponent, KpButtonComponent, KpCheckboxComponent } from '../../kits/ui-primeng-kit/angular';
 
 interface UiArticle {
   id: string;
@@ -16,7 +16,7 @@ interface UiArticle {
 @Component({
   selector: 'app-ui-catalog',
   standalone: true,
-  imports: [CommonModule, FormsModule, KpTagComponent],
+  imports: [CommonModule, FormsModule, KpTagComponent, KpButtonComponent],
   template: `
     <div class="catalog">
       <header class="catalog-header">
@@ -59,16 +59,21 @@ interface UiArticle {
               }
             </div>
             <div class="card-demo">
+              @if (article.id === 'KP-001') {
+                <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+                  <up-kp-button label="Primary" severity="primary" />
+                  <up-kp-button label="Secondary" severity="secondary" />
+                  <up-kp-button label="Danger" severity="danger" />
+                </div>
+              }
               @if (article.id === 'KP-006') {
-                <div style="padding: 16px 0;">
-                  <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
-                    <up-kp-tag value="info" severity="info" />
-                    <up-kp-tag value="success" severity="success" />
-                    <up-kp-tag value="warn" severity="warn" />
-                    <up-kp-tag value="danger" severity="danger" />
-                    <up-kp-tag value="secondary" severity="secondary" />
-                    <up-kp-tag value="contrast" severity="contrast" />
-                  </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+                  <up-kp-tag value="info" severity="info" />
+                  <up-kp-tag value="success" severity="success" />
+                  <up-kp-tag value="warn" severity="warn" />
+                  <up-kp-tag value="danger" severity="danger" />
+                  <up-kp-tag value="secondary" severity="secondary" />
+                  <up-kp-tag value="contrast" severity="contrast" />
                 </div>
               }
             </div>
@@ -147,7 +152,7 @@ export class UiCatalogComponent {
 
   articles = signal<UiArticle[]>([
     {
-      id: 'KP-001', name: 'Кнопка', selector: '<kp-button>',
+      id: 'KP-001', name: 'Кнопка', selector: '<up-kp-button>',
       description: 'Кнопка действий. Поддерживает severity (primary/secondary/danger/success), размеры, иконки, badge, варианты (premium/flat), состояния loading/disabled.',
       category: 'Ввод', copyTemplate: '<kp-button label="Сохранить" severity="primary" (buttonClick)="onSave()" />',
       props: ['label', 'severity', 'size', 'icon', 'iconPos', 'badge', 'badgeSeverity', 'loading', 'disabled', 'rounded', 'text', 'outlined', 'raised', 'block', 'variant', 'tooltip', 'ariaLabel'],
