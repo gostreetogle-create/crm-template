@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { KpTagComponent } from '../../kits/ui-primeng-kit/angular';
 
 interface UiArticle {
   id: string;
@@ -11,13 +11,12 @@ interface UiArticle {
   category: string;
   copyTemplate: string;
   props: string[];
-  demoRoute?: string;
 }
 
 @Component({
   selector: 'app-ui-catalog',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, KpTagComponent],
   template: `
     <div class="catalog">
       <header class="catalog-header">
@@ -43,9 +42,9 @@ interface UiArticle {
         </div>
       </header>
 
-      <div class="cards-grid">
+      <div class="cards">
         @for (article of filteredArticles(); track article.id) {
-          <a class="card" [id]="article.id" [routerLink]="article.demoRoute" [class.card--clickable]="!!article.demoRoute">
+          <div class="card" [id]="article.id">
             <div class="card-badge">{{ article.id }}</div>
             <h3>{{ article.name }}</h3>
             <p class="card-desc">{{ article.description }}</p>
@@ -59,11 +58,21 @@ interface UiArticle {
                 <span class="prop">{{ prop }}</span>
               }
             </div>
-            <div class="card-copy">
-              <code>{{ article.copyTemplate }}</code>
-              <button (click)="copyToClipboard(article.copyTemplate)">📋 Копировать</button>
+            <div class="card-demo">
+              @if (article.id === 'KP-006') {
+                <div style="padding: 16px 0;">
+                  <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+                    <up-kp-tag value="info" severity="info" />
+                    <up-kp-tag value="success" severity="success" />
+                    <up-kp-tag value="warn" severity="warn" />
+                    <up-kp-tag value="danger" severity="danger" />
+                    <up-kp-tag value="secondary" severity="secondary" />
+                    <up-kp-tag value="contrast" severity="contrast" />
+                  </div>
+                </div>
+              }
             </div>
-          </a>
+          </div>
         }
       </div>
 
@@ -92,48 +101,40 @@ interface UiArticle {
     .category-filters button.active { background: #3b82f6; color: white; border-color: #3b82f6; }
     .category-filters button:hover:not(.active) { background: #f3f4f6; }
 
-    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; }
+    .cards { display: flex; flex-direction: column; gap: 16px; }
     .card {
-      display: block; background: white; border-radius: 12px; border: 1px solid #e5e7eb;
-      padding: 20px; position: relative; transition: box-shadow .15s; text-decoration: none; color: inherit;
+      background: white; border-radius: 12px; border: 1px solid #e5e7eb;
+      padding: 24px; position: relative;
     }
     .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.08); }
-    .card--clickable { cursor: pointer; }
-    .card--clickable:hover { border-color: #3b82f6; }
     .card-badge {
-      position: absolute; top: 12px; right: 12px;
+      position: absolute; top: 16px; right: 16px;
       background: #eff6ff; color: #3b82f6; font-size: 12px; font-weight: 700;
       padding: 2px 10px; border-radius: 12px; font-family: monospace; letter-spacing: .5px;
     }
-    .card h3 { font-size: 18px; margin: 0 0 8px 0; padding-right: 80px; }
-    .card-desc { color: #6b7280; font-size: 13px; line-height: 1.5; margin-bottom: 12px; }
+    .card h3 { font-size: 20px; margin: 0 0 8px 0; padding-right: 80px; }
+    .card-desc { color: #6b7280; font-size: 14px; line-height: 1.5; margin-bottom: 12px; max-width: 700px; }
     .card-tags { display: flex; gap: 8px; margin-bottom: 10px; }
     .tag { font-size: 12px; padding: 2px 8px; border-radius: 6px; font-family: monospace; }
     .tag.selector { background: #fef3c7; color: #92400e; }
     .tag.category { background: #f3f4f6; color: #374151; }
 
-    .card-props { margin-bottom: 12px; }
+    .card-props { margin-bottom: 8px; }
     .props-label { font-size: 12px; color: #9ca3af; margin-right: 4px; }
     .prop {
       display: inline-block; font-size: 11px; background: #f9fafb; color: #6b7280;
       padding: 1px 6px; border-radius: 4px; margin: 2px; border: 1px solid #f3f4f6;
     }
 
-    .card-copy {
-      background: #1e293b; border-radius: 8px; padding: 10px 12px;
-      display: flex; justify-content: space-between; align-items: center;
+    .card-demo {
+      margin-top: 8px;
+      padding-top: 12px;
+      border-top: 1px solid #e5e7eb;
     }
-    .card-copy code { color: #e2e8f0; font-size: 12px; font-family: 'Fira Code', monospace; }
-    .card-copy button {
-      background: #334155; color: white; border: none; padding: 4px 12px;
-      border-radius: 6px; cursor: pointer; font-size: 12px; white-space: nowrap; margin-left: 8px;
-    }
-    .card-copy button:hover { background: #475569; }
 
     .empty { text-align: center; padding: 60px; color: #9ca3af; font-size: 16px; }
 
     @media (max-width: 768px) {
-      .cards-grid { grid-template-columns: 1fr; }
       .catalog { padding: 16px; }
     }
   `],
@@ -141,7 +142,6 @@ interface UiArticle {
 export class UiCatalogComponent {
   searchQuery = '';
   selectedCategory = signal('');
-  copiedId = signal('');
 
   categories = signal(['Ввод', 'Выбор', 'Отображение', 'Обратная связь', 'Навигация', 'Контейнеры', 'Загрузка', 'Таблицы', 'Медиа']);
 
@@ -181,7 +181,6 @@ export class UiCatalogComponent {
       description: 'Тег для отображения статусов. Severity: success/info/warn/danger/contrast.',
       category: 'Отображение', copyTemplate: '<up-kp-tag [value]="\'Активен\'" severity="success" />',
       props: ['value', 'severity', 'rounded'],
-      demoRoute: '/demo/tag',
     },
     {
       id: 'KP-007', name: 'Карточка', selector: '<kp-card>',
@@ -350,7 +349,4 @@ export class UiCatalogComponent {
     });
   }
 
-  copyToClipboard(text: string) {
-    navigator.clipboard.writeText(text).catch(() => {});
-  }
 }
