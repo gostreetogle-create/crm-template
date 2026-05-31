@@ -4,20 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent, KpSelectComponent, KpCheckboxComponent, KpCardComponent, KpSearchComponent, KpTextareaComponent, KpMultiselectComponent, KpInputNumberComponent, KpDatepickerComponent, KpPasswordComponent, KpBreadcrumbsComponent, KpTabGroupComponent, KpToastComponent, KpConfirmDialogComponent, KpFormFieldComponent, KpPhotoUploaderComponent, KpTableComponent, KpPaginatorComponent } from '../../kits/ui-primeng-kit/angular';
 import type { KpColumn, PhotoItem as KpPhotoItem } from '../../kits/ui-primeng-kit/angular';
-import {
-  SortableListDirective,
-  SortableItemDirective,
-  SortableHandleDirective,
-} from '../../kits/sortable-kit/angular';
+import { SortableListDirective, SortableItemDirective } from '../../kits/sortable-kit/angular';
 import { EntityPickerComponent } from '../../kits/entity-picker-kit/angular';
 import { PhotoUploaderComponent as PuPhotoUploaderComponent } from '../../kits/photo-uploader-kit/angular';
 import { EavAttributeEditorComponent } from '../../kits/eav-kit/angular';
-import { CrudPageComponent } from '../../kits/crud-page-kit/angular';
-import { LayoutShellComponent } from '../../kits/layout-shell-kit/angular';
-import { SchemaColumnBuilderComponent } from '../../kits/schema-table-kit/angular';
 import { PlaceholderPickerComponent } from '../../kits/placeholder-kit/angular';
-import { DocumentCanvasComponent } from '../../kits/document-canvas-kit/angular';
-import { QuotationEditorComponent } from '../../kits/quotation-editor/angular';
 
 interface UiArticle {
   id: string;
@@ -32,7 +23,7 @@ interface UiArticle {
 @Component({
   selector: 'app-ui-catalog',
   standalone: true,
-  imports: [CommonModule, FormsModule, DragDropModule, KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent, KpSelectComponent, KpCheckboxComponent, KpCardComponent, KpSearchComponent, KpTextareaComponent, KpMultiselectComponent, KpInputNumberComponent, KpDatepickerComponent, KpPasswordComponent, KpBreadcrumbsComponent, KpTabGroupComponent, KpToastComponent, KpConfirmDialogComponent, KpFormFieldComponent, KpPhotoUploaderComponent, KpTableComponent, KpPaginatorComponent, SortableListDirective, SortableItemDirective, SortableHandleDirective, EntityPickerComponent, PuPhotoUploaderComponent, EavAttributeEditorComponent, CrudPageComponent, LayoutShellComponent, SchemaColumnBuilderComponent, PlaceholderPickerComponent, DocumentCanvasComponent, QuotationEditorComponent],
+  imports: [CommonModule, FormsModule, DragDropModule, KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent, KpSelectComponent, KpCheckboxComponent, KpCardComponent, KpSearchComponent, KpTextareaComponent, KpMultiselectComponent, KpInputNumberComponent, KpDatepickerComponent, KpPasswordComponent, KpBreadcrumbsComponent, KpTabGroupComponent, KpToastComponent, KpConfirmDialogComponent, KpFormFieldComponent, KpPhotoUploaderComponent, KpTableComponent, KpPaginatorComponent, SortableListDirective, SortableItemDirective, EntityPickerComponent, PuPhotoUploaderComponent, EavAttributeEditorComponent, PlaceholderPickerComponent],
   template: `
     <div class="catalog">
       <header class="catalog-header">
