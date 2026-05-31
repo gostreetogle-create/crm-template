@@ -23,6 +23,8 @@ import { Component } from '@angular/core';
         </a>
       </div>
     </div>
+    
   `,
 })
-export class DashboardComponent {}
+export class DashboardComponent {
+}

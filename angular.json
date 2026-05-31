@@ -39,13 +39,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "prebundle": {
-              "exclude": [
-                "@angular/core", "@angular/common", "@angular/forms",
-                "@angular/router", "@angular/animations", "@angular/cdk",
-                "primeng", "@primeuix/themes", "primeicons"
-              ]
-            }
+            "prebundle": true
           },
           "configurations": {
             "production": { "buildTarget": "crm-template:build:production" },
@@ -62,4 +56,7 @@
         }
       }
     }
+},
+"cli": {
+  "analytics": "f3cb48af-7901-450a-ab6c-f0c3ee4c53ab"
 }

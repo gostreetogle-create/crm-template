@@ -1,5 +1,4 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
 import { providePrimeNG } from 'primeng/config';
@@ -19,12 +18,9 @@ import { provideQuotationEditorKit } from '../kits/quotation-editor/angular';
 import { provideSchemaDataTableKit } from '../kits/schema-data-table-kit/angular';
 import { provideSchemaTableKit } from '../kits/schema-table-kit/angular';
 
-import { appRoutes } from './app.routes';
-
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(appRoutes),
     provideAnimationsAsync(),
     provideHttpClient(),
     providePrimeNG({
