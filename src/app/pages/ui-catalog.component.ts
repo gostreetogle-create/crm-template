@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent, KpSelectComponent } from '../../kits/ui-primeng-kit/angular';
+import { KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent, KpSelectComponent, KpCheckboxComponent } from '../../kits/ui-primeng-kit/angular';
 
 interface UiArticle {
   id: string;
@@ -16,7 +16,7 @@ interface UiArticle {
 @Component({
   selector: 'app-ui-catalog',
   standalone: true,
-  imports: [CommonModule, FormsModule, KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent, KpSelectComponent],
+  imports: [CommonModule, FormsModule, KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent, KpSelectComponent, KpCheckboxComponent],
   template: `
     <div class="catalog">
       <header class="catalog-header">
@@ -83,6 +83,12 @@ interface UiArticle {
               @if (article.id === 'KP-004') {
                 <div style="max-width: 300px;">
                   <up-kp-select label="Статус" [(value)]="selectedValue" [options]="statusOptions" />
+                </div>
+              }
+              @if (article.id === 'KP-005') {
+                <div style="display: flex; gap: 24px;">
+                  <up-kp-checkbox label="Активен" [(checked)]="checkboxChecked" />
+                  <up-kp-checkbox label="Заблокирован" [disabled]="true" />
                 </div>
               }
               @if (article.id === 'KP-006') {
@@ -168,6 +174,7 @@ export class UiCatalogComponent {
   selectedCategory = signal('');
   dialogVisible = signal(false);
   selectedValue = signal<string | number | boolean | null>(null);
+  checkboxChecked = signal(true);
   statusOptions = [
     { label: 'Активен', value: 'active' },
     { label: 'Неактивен', value: 'inactive' },
@@ -202,7 +209,7 @@ export class UiCatalogComponent {
       props: ['label', 'value', 'options', 'placeholder', 'disabled', 'required'],
     },
     {
-      id: 'KP-005', name: 'Чекбокс', selector: '<kp-checkbox>',
+      id: 'KP-005', name: 'Чекбокс', selector: '<up-kp-checkbox>',
       description: 'Флажок (checkbox). Двусторонний binding через [(checked)]. Поддерживает label, disabled.',
       category: 'Выбор', copyTemplate: '<kp-checkbox label="Активен" [(checked)]="isActive" />',
       props: ['label', 'checked', 'disabled'],
