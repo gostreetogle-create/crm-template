@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent, KpSelectComponent, KpCheckboxComponent, KpCardComponent } from '../../kits/ui-primeng-kit/angular';
+import { KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent, KpSelectComponent, KpCheckboxComponent, KpCardComponent, KpSearchComponent, KpTextareaComponent, KpMultiselectComponent, KpInputNumberComponent, KpDatepickerComponent, KpPasswordComponent, KpBreadcrumbsComponent, KpTabGroupComponent, KpToastComponent, KpConfirmDialogComponent, KpFormFieldComponent, KpPhotoUploaderComponent, KpTableComponent, KpPaginatorComponent } from '../../kits/ui-primeng-kit/angular';
 
 interface UiArticle {
   id: string;
@@ -16,7 +16,7 @@ interface UiArticle {
 @Component({
   selector: 'app-ui-catalog',
   standalone: true,
-  imports: [CommonModule, FormsModule, KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent, KpSelectComponent, KpCheckboxComponent, KpCardComponent],
+  imports: [CommonModule, FormsModule, KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent, KpSelectComponent, KpCheckboxComponent, KpCardComponent, KpSearchComponent, KpTextareaComponent, KpMultiselectComponent, KpInputNumberComponent, KpDatepickerComponent, KpPasswordComponent, KpBreadcrumbsComponent, KpTabGroupComponent, KpToastComponent, KpConfirmDialogComponent, KpFormFieldComponent, KpPhotoUploaderComponent, KpTableComponent, KpPaginatorComponent],
   template: `
     <div class="catalog">
       <header class="catalog-header">
@@ -91,15 +91,6 @@ interface UiArticle {
                   <up-kp-checkbox label="Заблокирован" [disabled]="true" />
                 </div>
               }
-              @if (article.id === 'KP-007') {
-                <up-kp-card style="max-width: 300px;">
-                  <div style="padding: 20px; text-align: center; color: #374151;">
-                    <div style="font-size: 40px; margin-bottom: 8px;">📇</div>
-                    <div style="font-weight: 600; font-size: 16px;">Карточка</div>
-                    <div style="font-size: 13px; color: #6b7280; margin-top: 4px;">Контент внутри</div>
-                  </div>
-                </up-kp-card>
-              }
               @if (article.id === 'KP-006') {
                 <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
                   <up-kp-tag value="info" severity="info" />
@@ -109,6 +100,60 @@ interface UiArticle {
                   <up-kp-tag value="secondary" severity="secondary" />
                   <up-kp-tag value="contrast" severity="contrast" />
                 </div>
+              }
+              @if (article.id === 'KP-007') {
+                <up-kp-card style="max-width: 300px;">
+                  <div style="padding: 20px; text-align: center; color: #374151;">
+                    <div style="font-size: 40px; margin-bottom: 8px;">📇</div>
+                    <div style="font-weight: 600; font-size: 16px;">Карточка</div>
+                    <div style="font-size: 13px; color: #6b7280; margin-top: 4px;">Контент внутри</div>
+                  </div>
+                </up-kp-card>
+              }
+              @if (article.id === 'KP-008') {
+                <div style="max-width: 300px;">
+                  <up-kp-search placeholder="Поиск…" />
+                </div>
+              }
+              @if (article.id === 'KP-009') {
+                <div style="max-width: 400px;">
+                  <up-kp-textarea label="Описание" placeholder="Введите текст…" [rows]="3" />
+                </div>
+              }
+              @if (article.id === 'KP-010') {
+                <div style="max-width: 350px;">
+                  <up-kp-multiselect label="Категории" [(value)]="multiSelected" [options]="multiOptions" />
+                </div>
+              }
+              @if (article.id === 'KP-011') {
+                <div style="max-width: 250px;">
+                  <up-kp-input-number label="Цена" [(value)]="numberValue" [min]="0" [step]="100" />
+                </div>
+              }
+              @if (article.id === 'KP-012') {
+                <div style="max-width: 280px;">
+                  <up-kp-datepicker label="Дата" [(value)]="dateValue" />
+                </div>
+              }
+              @if (article.id === 'KP-013') {
+                <div style="max-width: 300px;">
+                  <up-kp-password label="Пароль" [(value)]="passwordValue" [feedback]="true" />
+                </div>
+              }
+              @if (article.id === 'KP-014') {
+                <up-kp-breadcrumbs [items]="breadcrumbItems" />
+              }
+              @if (article.id === 'KP-015') {
+                <up-kp-tab-group [options]="tabOptions" />
+              }
+              @if (article.id === 'KP-017') {
+                <div>
+                  <up-kp-button label="Удалить" severity="danger" (buttonClick)="confirmVisible.set(true)" />
+                  <up-kp-confirm-dialog />
+                </div>
+              }
+              @if (article.id === 'KP-021') {
+                <up-kp-paginator [rows]="15" [totalRecords]="100" [(first)]="pageValue" />
               }
             </div>
           </div>
@@ -190,6 +235,24 @@ export class UiCatalogComponent {
     { label: 'В архиве', value: 'archived' },
   ];
 
+  multiSelected = signal<string[]>(['category1']);
+  multiOptions: string[] = ['category1', 'category2', 'category3'];
+  numberValue = signal<number | null>(null);
+  dateValue = signal('');
+  passwordValue = signal('');
+  breadcrumbItems = [
+    { label: 'Главная', routerLink: '/' },
+    { label: 'Каталог', routerLink: '/catalog' },
+  ];
+  tabOptions = [
+    { label: 'Вкладка 1', value: 'tab1' },
+    { label: 'Вкладка 2', value: 'tab2' },
+  ];
+  confirmVisible = signal(false);
+  pageValue = signal(0);
+
+
+
   categories = signal(['Ввод', 'Выбор', 'Отображение', 'Обратная связь', 'Навигация', 'Контейнеры', 'Загрузка', 'Таблицы', 'Медиа']);
 
   articles = signal<UiArticle[]>([
@@ -236,87 +299,87 @@ export class UiCatalogComponent {
       props: ['header', 'subheader', 'styleClass'],
     },
     {
-      id: 'KP-008', name: 'Поиск', selector: '<kp-search>',
+      id: 'KP-008', name: 'Поиск', selector: '<up-kp-search>',
       description: 'Поле поиска с иконкой. Автоматический debounce. Событие (search) при вводе.',
-      category: 'Ввод', copyTemplate: '<kp-search placeholder="Поиск…" [(value)]="query" (search)="onSearch($event)" />',
+      category: 'Ввод', copyTemplate: '<up-kp-search placeholder="Поиск…" [(value)]="query" (search)="onSearch($event)" />',
       props: ['value', 'placeholder', 'disabled'],
     },
     {
-      id: 'KP-009', name: 'Текстовая область', selector: '<kp-textarea>',
+      id: 'KP-009', name: 'Текстовая область', selector: '<up-kp-textarea>',
       description: 'Многострочное текстовое поле. Поддерживает rows, autoResize.',
-      category: 'Ввод', copyTemplate: '<kp-textarea label="Описание" [(value)]="desc" [rows]="4" />',
+      category: 'Ввод', copyTemplate: '<up-kp-textarea label="Описание" [(value)]="desc" [rows]="4" />',
       props: ['label', 'value', 'placeholder', 'rows', 'disabled', 'autoResize'],
     },
     {
-      id: 'KP-010', name: 'Мультивыбор', selector: '<kp-multiselect>',
+      id: 'KP-010', name: 'Мультивыбор', selector: '<up-kp-multiselect>',
       description: 'Выпадающий список с множественным выбором. Значение — массив. Поддерживает фильтрацию.',
-      category: 'Выбор', copyTemplate: '<kp-multiselect label="Категории" [(value)]="selected" [options]="allOptions" />',
+      category: 'Выбор', copyTemplate: '<up-kp-multiselect label="Категории" [(value)]="selected" [options]="allOptions" />',
       props: ['label', 'value', 'options', 'placeholder', 'disabled', 'filter'],
     },
     {
-      id: 'KP-011', name: 'Числовой ввод', selector: '<kp-input-number>',
+      id: 'KP-011', name: 'Числовой ввод', selector: '<up-kp-input-number>',
       description: 'Поле для ввода чисел. Поддерживает min/max/step, кнопки +/-.',
-      category: 'Ввод', copyTemplate: '<kp-input-number label="Цена" [(value)]="price" [min]="0" [step]="100" />',
+      category: 'Ввод', copyTemplate: '<up-kp-input-number label="Цена" [(value)]="price" [min]="0" [step]="100" />',
       props: ['label', 'value', 'min', 'max', 'step', 'disabled'],
     },
     {
-      id: 'KP-012', name: 'Выбор даты', selector: '<kp-datepicker>',
+      id: 'KP-012', name: 'Выбор даты', selector: '<up-kp-datepicker>',
       description: 'Календарь для выбора даты. Поддерживает minDate/maxDate, формат, иконку.',
-      category: 'Ввод', copyTemplate: '<kp-datepicker label="Дата" [(value)]="date" />',
+      category: 'Ввод', copyTemplate: '<up-kp-datepicker label="Дата" [(value)]="date" />',
       props: ['label', 'value', 'minDate', 'maxDate', 'dateFormat', 'disabled', 'showIcon'],
     },
     {
-      id: 'KP-013', name: 'Пароль', selector: '<kp-password>',
+      id: 'KP-013', name: 'Пароль', selector: '<up-kp-password>',
       description: 'Поле ввода пароля с кнопкой показать/скрыть. Поддерживает обратную связь по силе пароля.',
-      category: 'Ввод', copyTemplate: '<kp-password label="Пароль" [(value)]="password" [feedback]="true" />',
+      category: 'Ввод', copyTemplate: '<up-kp-password label="Пароль" [(value)]="password" [feedback]="true" />',
       props: ['label', 'value', 'placeholder', 'feedback', 'disabled'],
     },
     {
-      id: 'KP-014', name: 'Хлебные крошки', selector: '<kp-breadcrumbs>',
+      id: 'KP-014', name: 'Хлебные крошки', selector: '<up-kp-breadcrumbs>',
       description: 'Навигационные хлебные крошки. Принимает массив элементов с label и routerLink.',
-      category: 'Навигация', copyTemplate: '<kp-breadcrumbs [items]="breadcrumbItems" />',
+      category: 'Навигация', copyTemplate: '<up-kp-breadcrumbs [items]="breadcrumbItems" />',
       props: ['items', 'home'],
     },
     {
-      id: 'KP-015', name: 'Табы', selector: '<kp-tab-group>',
+      id: 'KP-015', name: 'Табы', selector: '<up-kp-tab-group>',
       description: 'Группа вкладок. Принимает массив options с label и контентом через ng-template.',
-      category: 'Навигация', copyTemplate: '<kp-tab-group [options]="tabOptions" [(activeIndex)]="activeTab" />',
+      category: 'Навигация', copyTemplate: '<up-kp-tab-group [options]="tabOptions" [(activeIndex)]="activeTab" />',
       props: ['options', 'activeIndex'],
     },
     {
-      id: 'KP-016', name: 'Toast уведомления', selector: '<kp-toast>',
+      id: 'KP-016', name: 'Toast уведомления', selector: '<up-kp-toast>',
       description: 'Всплывающие уведомления. Severity: success/info/warn/error. Авто-закрытие.',
-      category: 'Обратная связь', copyTemplate: '<kp-toast />',
+      category: 'Обратная связь', copyTemplate: '<up-kp-toast />',
       props: ['position', 'life'],
     },
     {
-      id: 'KP-017', name: 'Диалог подтверждения', selector: '<kp-confirm-dialog>',
+      id: 'KP-017', name: 'Диалог подтверждения', selector: '<up-kp-confirm-dialog>',
       description: 'Диалог «Вы уверены?» с кнопками Да/Нет. События (accept) и (reject).',
-      category: 'Обратная связь', copyTemplate: '<kp-confirm-dialog [(visible)]="confirmOpen" header="Удалить?" message="Вы уверены?" (accept)="onDelete()" />',
+      category: 'Обратная связь', copyTemplate: '<up-kp-confirm-dialog [(visible)]="confirmOpen" header="Удалить?" message="Вы уверены?" (accept)="onDelete()" />',
       props: ['visible', 'header', 'message', 'acceptLabel', 'rejectLabel'],
     },
     {
-      id: 'KP-018', name: 'Поле формы', selector: '<kp-form-field>',
+      id: 'KP-018', name: 'Поле формы', selector: '<up-kp-form-field>',
       description: 'Обёртка для поля ввода с label и сообщением об ошибке. Компонует label + input + error в единый блок.',
-      category: 'Ввод', copyTemplate: '<kp-form-field label="Email"><kp-input [(value)]="email" type="email" /></kp-form-field>',
+      category: 'Ввод', copyTemplate: '<up-kp-form-field label="Email"><up-kp-input [(value)]="email" type="email" /></up-kp-form-field>',
       props: ['label', 'error', 'required'],
     },
     {
-      id: 'KP-019', name: 'Загрузка фото', selector: '<kp-photo-uploader>',
+      id: 'KP-019', name: 'Загрузка фото', selector: '<up-kp-photo-uploader>',
       description: 'Компонент загрузки фотографий с drag-and-drop и предпросмотром. До 10 фото.',
-      category: 'Медиа', copyTemplate: '<kp-photo-uploader [(photos)]="photoList" [maxPhotos]="5" />',
+      category: 'Медиа', copyTemplate: '<up-kp-photo-uploader [(photos)]="photoList" [maxPhotos]="5" />',
       props: ['photos', 'maxPhotos', 'disabled'],
     },
     {
-      id: 'KP-020', name: 'Таблица', selector: '<kp-table>',
+      id: 'KP-020', name: 'Таблица', selector: '<up-kp-table>',
       description: 'Таблица данных с сортировкой по колонкам. Поддерживает actions, selection.',
-      category: 'Таблицы', copyTemplate: '<kp-table [columns]="cols" [rows]="data" [sortable]="true" (sortChange)="onSort($event)" />',
+      category: 'Таблицы', copyTemplate: '<up-kp-table [columns]="cols" [rows]="data" [sortable]="true" (sortChange)="onSort($event)" />',
       props: ['columns', 'rows', 'sortable', 'paginator', 'actions', 'selection'],
     },
     {
-      id: 'KP-021', name: 'Пагинатор', selector: '<kp-paginator>',
+      id: 'KP-021', name: 'Пагинатор', selector: '<up-kp-paginator>',
       description: 'Постраничная навигация. События при смене страницы и размера.',
-      category: 'Таблицы', copyTemplate: '<kp-paginator [total]="100" [(page)]="page" [limit]="15" (pageChange)="onPage($event)" />',
+      category: 'Таблицы', copyTemplate: '<up-kp-paginator [total]="100" [(page)]="page" [limit]="15" (pageChange)="onPage($event)" />',
       props: ['total', 'page', 'limit', 'pageChange'],
     },
     {
