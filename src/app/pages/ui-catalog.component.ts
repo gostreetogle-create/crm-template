@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 interface UiArticle {
   id: string;
@@ -10,12 +11,13 @@ interface UiArticle {
   category: string;
   copyTemplate: string;
   props: string[];
+  demoRoute?: string;
 }
 
 @Component({
   selector: 'app-ui-catalog',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   template: `
     <div class="catalog">
       <header class="catalog-header">
@@ -43,7 +45,7 @@ interface UiArticle {
 
       <div class="cards-grid">
         @for (article of filteredArticles(); track article.id) {
-          <div class="card" [id]="article.id">
+          <a class="card" [id]="article.id" [routerLink]="article.demoRoute" [class.card--clickable]="!!article.demoRoute">
             <div class="card-badge">{{ article.id }}</div>
             <h3>{{ article.name }}</h3>
             <p class="card-desc">{{ article.description }}</p>
@@ -61,7 +63,7 @@ interface UiArticle {
               <code>{{ article.copyTemplate }}</code>
               <button (click)="copyToClipboard(article.copyTemplate)">📋 Копировать</button>
             </div>
-          </div>
+          </a>
         }
       </div>
 
@@ -92,10 +94,12 @@ interface UiArticle {
 
     .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; }
     .card {
-      background: white; border-radius: 12px; border: 1px solid #e5e7eb;
-      padding: 20px; position: relative; transition: box-shadow .15s;
+      display: block; background: white; border-radius: 12px; border: 1px solid #e5e7eb;
+      padding: 20px; position: relative; transition: box-shadow .15s; text-decoration: none; color: inherit;
     }
     .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+    .card--clickable { cursor: pointer; }
+    .card--clickable:hover { border-color: #3b82f6; }
     .card-badge {
       position: absolute; top: 12px; right: 12px;
       background: #eff6ff; color: #3b82f6; font-size: 12px; font-weight: 700;
@@ -173,10 +177,11 @@ export class UiCatalogComponent {
       props: ['label', 'checked', 'disabled'],
     },
     {
-      id: 'KP-006', name: 'Тег/Бейдж', selector: '<kp-tag>',
+      id: 'KP-006', name: 'Тег/Бейдж', selector: '<up-kp-tag>',
       description: 'Тег для отображения статусов. Severity: success/info/warn/danger/contrast.',
-      category: 'Отображение', copyTemplate: '<kp-tag [value]="\'Активен\'" severity="success" />',
+      category: 'Отображение', copyTemplate: '<up-kp-tag [value]="\'Активен\'" severity="success" />',
       props: ['value', 'severity', 'rounded'],
+      demoRoute: '/demo/tag',
     },
     {
       id: 'KP-007', name: 'Карточка', selector: '<kp-card>',

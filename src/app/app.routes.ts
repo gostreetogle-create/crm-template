@@ -15,6 +15,10 @@ export const appRoutes: Routes = [
         path: 'ui-catalog',
         loadComponent: () => import('./pages/ui-catalog.component').then((m) => m.UiCatalogComponent),
       },
+      {
+        path: 'demo/tag',
+        loadComponent: () => import('./demos/tag-demo.component').then((m) => m.TagDemoComponent),
+      },
     ],
   },
   { path: '**', redirectTo: 'dashboard' },
