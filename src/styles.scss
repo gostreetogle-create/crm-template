@@ -1,0 +1,15 @@
+@use './kits/ui-primeng-kit/angular/styles/_tokens' as *;
+@import 'primeicons/primeicons.css';
+
+:root {
+  @include kp-light-tokens-on-root;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: #f3f4f6;
+  color: #111827;
+}
