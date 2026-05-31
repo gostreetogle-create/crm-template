@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { KpTagComponent, KpButtonComponent, KpInputComponent } from '../../kits/ui-primeng-kit/angular';
+import { KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent } from '../../kits/ui-primeng-kit/angular';
 
 interface UiArticle {
   id: string;
@@ -16,7 +16,7 @@ interface UiArticle {
 @Component({
   selector: 'app-ui-catalog',
   standalone: true,
-  imports: [CommonModule, FormsModule, KpTagComponent, KpButtonComponent, KpInputComponent],
+  imports: [CommonModule, FormsModule, KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent],
   template: `
     <div class="catalog">
       <header class="catalog-header">
@@ -70,6 +70,14 @@ interface UiArticle {
                 <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
                   <up-kp-input label="Имя" placeholder="Введите имя" />
                   <up-kp-input label="Email" type="email" placeholder="mail@example.com" />
+                </div>
+              }
+              @if (article.id === 'KP-003') {
+                <div>
+                  <up-kp-button label="Открыть диалог" severity="primary" (buttonClick)="dialogVisible.set(true)" />
+                  <up-kp-dialog [(visible)]="dialogVisible" header="Пример диалога">
+                    <p style="margin:0">Содержимое модального окна.</p>
+                  </up-kp-dialog>
                 </div>
               }
               @if (article.id === 'KP-006') {
@@ -153,6 +161,7 @@ interface UiArticle {
 export class UiCatalogComponent {
   searchQuery = '';
   selectedCategory = signal('');
+  dialogVisible = signal(false);
 
   categories = signal(['Ввод', 'Выбор', 'Отображение', 'Обратная связь', 'Навигация', 'Контейнеры', 'Загрузка', 'Таблицы', 'Медиа']);
 
@@ -170,7 +179,7 @@ export class UiCatalogComponent {
       props: ['label', 'value', 'type', 'placeholder', 'required', 'readonly', 'disabled', 'error', 'size', 'ariaLabel', 'autofocus'],
     },
     {
-      id: 'KP-003', name: 'Диалог', selector: '<kp-dialog>',
+      id: 'KP-003', name: 'Диалог', selector: '<up-kp-dialog>',
       description: 'Модальное окно. Поддерживает header, ширину, слот footer через ng-template kpDialogFooter, двусторонний binding visible.',
       category: 'Контейнеры', copyTemplate: '<kp-dialog [(visible)]="open" header="Заголовок"><p>Содержимое</p><ng-template kpDialogFooter><kp-button label="OK" (buttonClick)="open=false" /></ng-template></kp-dialog>',
       props: ['visible', 'header', 'width', 'ariaLabel', 'hide', 'visibleChange'],
