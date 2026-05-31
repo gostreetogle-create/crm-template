@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { KpTagComponent, KpButtonComponent, KpCheckboxComponent } from '../../kits/ui-primeng-kit/angular';
+import { KpTagComponent, KpButtonComponent, KpInputComponent } from '../../kits/ui-primeng-kit/angular';
 
 interface UiArticle {
   id: string;
@@ -16,7 +16,7 @@ interface UiArticle {
 @Component({
   selector: 'app-ui-catalog',
   standalone: true,
-  imports: [CommonModule, FormsModule, KpTagComponent, KpButtonComponent],
+  imports: [CommonModule, FormsModule, KpTagComponent, KpButtonComponent, KpInputComponent],
   template: `
     <div class="catalog">
       <header class="catalog-header">
@@ -64,6 +64,12 @@ interface UiArticle {
                   <up-kp-button label="Primary" severity="primary" />
                   <up-kp-button label="Secondary" severity="secondary" />
                   <up-kp-button label="Danger" severity="danger" />
+                </div>
+              }
+              @if (article.id === 'KP-002') {
+                <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+                  <up-kp-input label="Имя" placeholder="Введите имя" />
+                  <up-kp-input label="Email" type="email" placeholder="mail@example.com" />
                 </div>
               }
               @if (article.id === 'KP-006') {
@@ -158,7 +164,7 @@ export class UiCatalogComponent {
       props: ['label', 'severity', 'size', 'icon', 'iconPos', 'badge', 'badgeSeverity', 'loading', 'disabled', 'rounded', 'text', 'outlined', 'raised', 'block', 'variant', 'tooltip', 'ariaLabel'],
     },
     {
-      id: 'KP-002', name: 'Поле ввода', selector: '<kp-input>',
+      id: 'KP-002', name: 'Поле ввода', selector: '<up-kp-input>',
       description: 'Текстовое поле ввода. Типы: text, number, email, tel, url. Поддерживает label, placeholder, error, размеры.',
       category: 'Ввод', copyTemplate: '<kp-input label="Название" [(value)]="name" placeholder="Введите название" />',
       props: ['label', 'value', 'type', 'placeholder', 'required', 'readonly', 'disabled', 'error', 'size', 'ariaLabel', 'autofocus'],
