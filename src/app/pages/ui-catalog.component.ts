@@ -1,8 +1,23 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent, KpSelectComponent, KpCheckboxComponent, KpCardComponent, KpSearchComponent, KpTextareaComponent, KpMultiselectComponent, KpInputNumberComponent, KpDatepickerComponent, KpPasswordComponent, KpBreadcrumbsComponent, KpTabGroupComponent, KpToastComponent, KpConfirmDialogComponent, KpFormFieldComponent, KpPhotoUploaderComponent, KpTableComponent, KpPaginatorComponent } from '../../kits/ui-primeng-kit/angular';
-import type { KpColumn, PhotoItem } from '../../kits/ui-primeng-kit/angular';
+import type { KpColumn, PhotoItem as KpPhotoItem } from '../../kits/ui-primeng-kit/angular';
+import {
+  SortableListDirective,
+  SortableItemDirective,
+  SortableHandleDirective,
+} from '../../kits/sortable-kit/angular';
+import { EntityPickerComponent } from '../../kits/entity-picker-kit/angular';
+import { PhotoUploaderComponent as PuPhotoUploaderComponent } from '../../kits/photo-uploader-kit/angular';
+import { EavAttributeEditorComponent } from '../../kits/eav-kit/angular';
+import { CrudPageComponent } from '../../kits/crud-page-kit/angular';
+import { LayoutShellComponent } from '../../kits/layout-shell-kit/angular';
+import { SchemaColumnBuilderComponent } from '../../kits/schema-table-kit/angular';
+import { PlaceholderPickerComponent } from '../../kits/placeholder-kit/angular';
+import { DocumentCanvasComponent } from '../../kits/document-canvas-kit/angular';
+import { QuotationEditorComponent } from '../../kits/quotation-editor/angular';
 
 interface UiArticle {
   id: string;
@@ -17,7 +32,7 @@ interface UiArticle {
 @Component({
   selector: 'app-ui-catalog',
   standalone: true,
-  imports: [CommonModule, FormsModule, KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent, KpSelectComponent, KpCheckboxComponent, KpCardComponent, KpSearchComponent, KpTextareaComponent, KpMultiselectComponent, KpInputNumberComponent, KpDatepickerComponent, KpPasswordComponent, KpBreadcrumbsComponent, KpTabGroupComponent, KpToastComponent, KpConfirmDialogComponent, KpFormFieldComponent, KpPhotoUploaderComponent, KpTableComponent, KpPaginatorComponent],
+  imports: [CommonModule, FormsModule, DragDropModule, KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent, KpSelectComponent, KpCheckboxComponent, KpCardComponent, KpSearchComponent, KpTextareaComponent, KpMultiselectComponent, KpInputNumberComponent, KpDatepickerComponent, KpPasswordComponent, KpBreadcrumbsComponent, KpTabGroupComponent, KpToastComponent, KpConfirmDialogComponent, KpFormFieldComponent, KpPhotoUploaderComponent, KpTableComponent, KpPaginatorComponent, SortableListDirective, SortableItemDirective, SortableHandleDirective, EntityPickerComponent, PuPhotoUploaderComponent, EavAttributeEditorComponent, CrudPageComponent, LayoutShellComponent, SchemaColumnBuilderComponent, PlaceholderPickerComponent, DocumentCanvasComponent, QuotationEditorComponent],
   template: `
     <div class="catalog">
       <header class="catalog-header">
@@ -174,6 +189,48 @@ interface UiArticle {
               @if (article.id === 'KP-021') {
                 <up-kp-paginator [rows]="15" [totalRecords]="100" [(first)]="pageValue" />
               }
+              @if (article.id === 'KP-022') {
+                <div style="max-width: 300px;">
+                  <div soSortableList soSortableListData="sortedItems" (soSortableListDropped)="onSortDrop($event)">
+                    @for (item of sortedItems; track item) {
+                      <div soSortableItem style="padding: 6px 10px; margin: 2px 0; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 4px; cursor: grab;">{{ item }}</div>
+                    }
+                  </div>
+                </div>
+              }
+              @if (article.id === 'KP-023') {
+                <div>
+                  <up-kp-button label="Выбрать сущность" severity="primary" (buttonClick)="entityPickerVisible.set(true)" />
+                  <ep-entity-picker entityKey="products" [(visible)]="entityPickerVisible" (selected)="onEntitySelected($event)" />
+                </div>
+              }
+              @if (article.id === 'KP-024') {
+                <pu-photo-uploader style="max-width: 400px; display: block;" />
+              }
+              @if (article.id === 'KP-025') {
+                <eav-attribute-editor entityKey="products" />
+              }
+              @if (article.id === 'KP-026') {
+                <p style="color: #9ca3af; font-style: italic;">Требуется настройка store и конфига. См. cp-crud-page в документации.</p>
+              }
+              @if (article.id === 'KP-027') {
+                <p style="color: #9ca3af; font-style: italic;">Полноценный app shell с роутингом. См. ls-layout-shell в документации.</p>
+              }
+              @if (article.id === 'KP-028') {
+                <p style="color: #9ca3af; font-style: italic;">Требуется настройка SchemaProvider. См. st-schema-column-builder в документации.</p>
+              }
+              @if (article.id === 'KP-029') {
+                <div>
+                  <up-kp-button label="Вставить плейсхолдер" severity="primary" (buttonClick)="placeholderVisible.set(true)" />
+                  <ph-placeholder-picker [(visible)]="placeholderVisible" (placeholderSelected)="onPlaceholderSelected($event)" />
+                </div>
+              }
+              @if (article.id === 'KP-030') {
+                <p style="color: #9ca3af; font-style: italic;">Редактор блоков документа. См. dc-document-canvas в документации.</p>
+              }
+              @if (article.id === 'KP-031') {
+                <p style="color: #9ca3af; font-style: italic;">Готовый редактор КП. См. qe-quotation-editor в документации.</p>
+              }
             </div>
           </div>
         }
@@ -269,7 +326,10 @@ export class UiCatalogComponent {
   ];
   confirmVisible = signal(false);
   pageValue = signal(0);
-  photoItems = signal<PhotoItem[]>([]);
+  photoItems = signal<KpPhotoItem[]>([]);
+  sortedItems = ['Пункт A', 'Пункт B', 'Пункт C'];
+  entityPickerVisible = signal(false);
+  placeholderVisible = signal(false);
   demoColumns: KpColumn[] = [
     { field: 'name', header: 'Имя', type: 'text', sortable: true },
     { field: 'status', header: 'Статус', type: 'tag', sortable: true },
@@ -413,7 +473,7 @@ export class UiCatalogComponent {
       props: ['total', 'page', 'limit', 'pageChange'],
     },
     {
-      id: 'KP-022', name: 'Drag-and-drop список', selector: 'soSortableList / soSortableItem',
+      id: 'KP-022', name: 'Drag-and-drop список', selector: '[soSortableList] / [soSortableItem]',
       description: 'Сортируемый список перетаскиванием. Директивы: soSortableList (контейнер), soSortableItem (элемент), soSortableHandle (ручка).',
       category: 'Навигация', copyTemplate: '<div soSortableList (sorted)="onSorted($event)"><div *ngFor="let item of items" soSortableItem>{{ item }}</div></div>',
       props: ['sorted', 'disabled', 'axis'],
@@ -489,4 +549,16 @@ export class UiCatalogComponent {
     });
   }
 
+  onSortDrop(event: { previousIndex: number; currentIndex: number }): void {
+    const item = this.sortedItems.splice(event.previousIndex, 1)[0];
+    this.sortedItems.splice(event.currentIndex, 0, item);
+  }
+
+  onEntitySelected(row: unknown): void {
+    this.entityPickerVisible.set(false);
+  }
+
+  onPlaceholderSelected(token: string): void {
+    this.placeholderVisible.set(false);
+  }
 }
