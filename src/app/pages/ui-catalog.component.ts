@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent, KpSelectComponent, KpCheckboxComponent, KpCardComponent, KpSearchComponent, KpTextareaComponent, KpMultiselectComponent, KpInputNumberComponent, KpDatepickerComponent, KpPasswordComponent, KpBreadcrumbsComponent, KpTabGroupComponent, KpToastComponent, KpConfirmDialogComponent, KpFormFieldComponent, KpPhotoUploaderComponent, KpTableComponent, KpPaginatorComponent } from '../../kits/ui-primeng-kit/angular';
+import type { KpColumn, PhotoItem } from '../../kits/ui-primeng-kit/angular';
 
 interface UiArticle {
   id: string;
@@ -152,6 +153,24 @@ interface UiArticle {
                   <up-kp-confirm-dialog />
                 </div>
               }
+              @if (article.id === 'KP-016') {
+                <up-kp-toast position="top-right" />
+              }
+              @if (article.id === 'KP-018') {
+                <div style="max-width: 350px;">
+                  <up-kp-form-field label="Email" error="Обязательное поле">
+                    <up-kp-input type="email" placeholder="mail@example.com" />
+                  </up-kp-form-field>
+                </div>
+              }
+              @if (article.id === 'KP-019') {
+                <div style="max-width: 400px;">
+                  <up-kp-photo-uploader [(photos)]="photoItems" />
+                </div>
+              }
+              @if (article.id === 'KP-020') {
+                <up-kp-table [columns]="demoColumns" [data]="demoRows" [title]="'Демо таблица'" />
+              }
               @if (article.id === 'KP-021') {
                 <up-kp-paginator [rows]="15" [totalRecords]="100" [(first)]="pageValue" />
               }
@@ -250,6 +269,17 @@ export class UiCatalogComponent {
   ];
   confirmVisible = signal(false);
   pageValue = signal(0);
+  photoItems = signal<PhotoItem[]>([]);
+  demoColumns: KpColumn[] = [
+    { field: 'name', header: 'Имя', type: 'text', sortable: true },
+    { field: 'status', header: 'Статус', type: 'tag', sortable: true },
+    { field: 'date', header: 'Дата', type: 'date', sortable: true },
+  ];
+  demoRows: object[] = [
+    { name: 'Товар A', status: 'success', date: '2026-05-01' },
+    { name: 'Товар B', status: 'warn', date: '2026-05-15' },
+    { name: 'Товар C', status: 'danger', date: '2026-05-20' },
+  ];
 
 
 
