@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent } from '../../kits/ui-primeng-kit/angular';
+import { KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent, KpSelectComponent } from '../../kits/ui-primeng-kit/angular';
 
 interface UiArticle {
   id: string;
@@ -16,7 +16,7 @@ interface UiArticle {
 @Component({
   selector: 'app-ui-catalog',
   standalone: true,
-  imports: [CommonModule, FormsModule, KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent],
+  imports: [CommonModule, FormsModule, KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent, KpSelectComponent],
   template: `
     <div class="catalog">
       <header class="catalog-header">
@@ -78,6 +78,11 @@ interface UiArticle {
                   <up-kp-dialog [(visible)]="dialogVisible" header="Пример диалога">
                     <p style="margin:0">Содержимое модального окна.</p>
                   </up-kp-dialog>
+                </div>
+              }
+              @if (article.id === 'KP-004') {
+                <div style="max-width: 300px;">
+                  <up-kp-select label="Статус" [(value)]="selectedValue" [options]="statusOptions" />
                 </div>
               }
               @if (article.id === 'KP-006') {
@@ -162,6 +167,12 @@ export class UiCatalogComponent {
   searchQuery = '';
   selectedCategory = signal('');
   dialogVisible = signal(false);
+  selectedValue = signal<string | number | boolean | null>(null);
+  statusOptions = [
+    { label: 'Активен', value: 'active' },
+    { label: 'Неактивен', value: 'inactive' },
+    { label: 'В архиве', value: 'archived' },
+  ];
 
   categories = signal(['Ввод', 'Выбор', 'Отображение', 'Обратная связь', 'Навигация', 'Контейнеры', 'Загрузка', 'Таблицы', 'Медиа']);
 
@@ -185,7 +196,7 @@ export class UiCatalogComponent {
       props: ['visible', 'header', 'width', 'ariaLabel', 'hide', 'visibleChange'],
     },
     {
-      id: 'KP-004', name: 'Выпадающий список', selector: '<kp-select>',
+      id: 'KP-004', name: 'Выпадающий список', selector: '<up-kp-select>',
       description: 'Select/Dropdown для выбора одного значения. Опции передаются через [options]. Поддерживает placeholder, disabled.',
       category: 'Выбор', copyTemplate: '<kp-select label="Статус" [(value)]="status" [options]="myOptions" placeholder="Выберите статус" />',
       props: ['label', 'value', 'options', 'placeholder', 'disabled', 'required'],
