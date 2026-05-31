@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent, KpSelectComponent, KpCheckboxComponent } from '../../kits/ui-primeng-kit/angular';
+import { KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent, KpSelectComponent, KpCheckboxComponent, KpCardComponent } from '../../kits/ui-primeng-kit/angular';
 
 interface UiArticle {
   id: string;
@@ -16,7 +16,7 @@ interface UiArticle {
 @Component({
   selector: 'app-ui-catalog',
   standalone: true,
-  imports: [CommonModule, FormsModule, KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent, KpSelectComponent, KpCheckboxComponent],
+  imports: [CommonModule, FormsModule, KpTagComponent, KpButtonComponent, KpInputComponent, KpDialogComponent, KpSelectComponent, KpCheckboxComponent, KpCardComponent],
   template: `
     <div class="catalog">
       <header class="catalog-header">
@@ -90,6 +90,15 @@ interface UiArticle {
                   <up-kp-checkbox label="Активен" [(checked)]="checkboxChecked" />
                   <up-kp-checkbox label="Заблокирован" [disabled]="true" />
                 </div>
+              }
+              @if (article.id === 'KP-007') {
+                <up-kp-card style="max-width: 300px;">
+                  <div style="padding: 20px; text-align: center; color: #374151;">
+                    <div style="font-size: 40px; margin-bottom: 8px;">📇</div>
+                    <div style="font-weight: 600; font-size: 16px;">Карточка</div>
+                    <div style="font-size: 13px; color: #6b7280; margin-top: 4px;">Контент внутри</div>
+                  </div>
+                </up-kp-card>
               }
               @if (article.id === 'KP-006') {
                 <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
@@ -221,7 +230,7 @@ export class UiCatalogComponent {
       props: ['value', 'severity', 'rounded'],
     },
     {
-      id: 'KP-007', name: 'Карточка', selector: '<kp-card>',
+      id: 'KP-007', name: 'Карточка', selector: '<up-kp-card>',
       description: 'Контейнер-карточка. Поддерживает header, subheader, слоты для контента и footer.',
       category: 'Контейнеры', copyTemplate: '<kp-card header="Заголовок"><p>Содержимое карточки</p></kp-card>',
       props: ['header', 'subheader', 'styleClass'],
